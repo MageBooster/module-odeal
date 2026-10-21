@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <magebooster_odeal>
+                <model>OdealFacade</model>
+                <active>0</active>
+                <title>Credit / debit card (Ödeal)</title>
+                <payment_action>authorize</payment_action>
+                <order_status>pending_payment</order_status>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>0</can_use_internal>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <test_mode>1</test_mode>
+                <debug>0</debug>
+                <allowspecific>0</allowspecific>
+                <sort_order>62</sort_order>
+                <test_url></test_url>
+                <live_url></live_url>
+                <charge_currencies>TRY</charge_currencies>
+                <grant_type>client_credentials</grant_type>
+                <token_path>/token</token_path>
+                <refund_path>/vpos/refund</refund_path>
+                <client_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted"/>
+            </magebooster_odeal>
+        </payment>
+    </default>
+</config>

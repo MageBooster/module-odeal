@@ -1,0 +1,131 @@
+# MageBooster_Odeal – Ödeal for Magento 2
+
+Free (MIT) Ödeal payment method for Magento Open Source / Adobe Commerce **2.4.9** and Mage-OS (PHP 8.3 – 8.5).
+Made by [MageBooster](https://magebooster.com). Türkçe açıklama aşağıda.
+
+## Install
+
+```bash
+composer require magebooster/module-odeal
+bin/magento module:enable MageBooster_Odeal
+bin/magento setup:upgrade
+bin/magento setup:di:compile && bin/magento setup:static-content:deploy   # production mode
+```
+
+Manual: copy this folder to `app/code/MageBooster/Odeal` and run the same commands.
+
+## Settings
+
+Stores › Configuration › Sales › Payment Methods › **Ödeal · MageBooster**:
+enabled, title, checkout text, test mode, credentials (secrets are stored encrypted), test and live API address,
+currencies charged directly, allowed countries, sort order, debug log (`var/log/magebooster_mbodeal.log`, card data and secrets are masked).
+
+Credentials: Client ID, client secret, grant type, scope, and the test and live API addresses (they are not published in the docs).
+
+## How it works
+
+After the order is placed the module gets a bearer token (`/token`), creates a 3D Secure payment page
+(`/vpos/pay-by-link`, `externalId` = order number) and sends the customer there. On the way back (`/mbodeal/payment/callback`)
+the module asks Ödeal for the result (`/vpos/check-status`); a cron job repeats this every 10 minutes for customers who
+closed the browser.
+
+- The order is created as **pending payment** and the order email waits until the payment is confirmed.
+- Paid: an invoice is created automatically and the order moves to **processing**.
+- Failed or cancelled: the order is cancelled and the customer's cart is restored.
+- Unpaid orders are cancelled by Magento's own *Pending Payment Order Lifetime* (Sales › Sales › Orders Cron Settings).
+- Refunds: Credit memo → "Refund" calls the refund path set in the admin (default `/vpos/refund`; confirm with Ödeal).
+- Return URLs carry the order number signed with your store's crypt key, so they can't be guessed.
+
+**PCI DSS:** card details are entered on Ödeal's page only; your store never sees them.
+
+## Currencies and TRY
+
+Charged directly: TRY (add others in the admin if Ödeal enables them for you). When the order currency is something else, the base grand total is converted to TRY
+with the rate saved in Stores › Currency Rates. The TRY amount and rate are shown under the payment method at checkout,
+stored on the payment, and shown on the order page, so the customer is never charged a different amount than shown.
+For daily Central Bank of Türkiye (TCMB) rates use **MageBooster Currency Rates** (paid); without it, any Magento rate source works.
+
+## Checkout compatibility
+
+- Uses the standard Magento payment renderer (`checkout_index_index` layout + a `Magento_Checkout/js/view/payment/default`
+  method renderer), so it works in the native checkout and in one-step checkouts that render standard payment methods,
+  including the free and Pro **MageBooster Checkout**.
+- It doesn't depend on the native multi-step step navigator.
+- **Hyvä:** the Knockout renderer is for Luma-based checkouts. Hyvä Checkout needs a small Magewire/Alpine payment
+  component; the server side (redirect, callback, refund) is the same. A Hyvä compatibility module is planned.
+
+## Not tested yet
+
+- Not run against Ödeal yet (no test credentials).
+- API addresses, the token answer fields (`accessToken`/`access_token`/`token` are accepted) and the refund endpoint are not in the
+  public docs, so they are admin settings.
+- Each new token invalidates the previous one. The module uses one token per request; if many payments start at the
+  same second, one of them may have to be retried.
+
+## License
+
+MIT. Ödeal is a trademark of its owner; this module is not made or endorsed by them.
+
+---
+
+# MageBooster_Odeal – Magento 2 için Ödeal
+
+Magento Open Source / Adobe Commerce **2.4.9** ve Mage-OS için ücretsiz (MIT) Ödeal ödeme yöntemi (PHP 8.3 – 8.5).
+
+## Kurulum
+
+```bash
+composer require magebooster/module-odeal
+bin/magento module:enable MageBooster_Odeal
+bin/magento setup:upgrade
+bin/magento setup:di:compile && bin/magento setup:static-content:deploy tr_TR en_US
+```
+
+## Ayarlar
+
+Mağazalar › Yapılandırma › Satış › Ödeme Yöntemleri › **Ödeal · MageBooster**: etkin, başlık, ödeme adımı metni, test modu,
+API bilgileri (gizli alanlar şifreli saklanır), test ve canlı API adresi, doğrudan tahsil edilen para birimleri, ülkeler,
+sıralama, hata ayıklama kaydı (`var/log/magebooster_mbodeal.log`; kart bilgisi ve gizli anahtarlar maskelenir).
+
+Gerekli bilgiler: Client ID, client secret, grant type, scope ve test/canlı API adresleri (dokümanda yayınlanmıyor).
+
+## Nasıl çalışır
+
+Sipariş verildikten sonra modül bearer token alır (`/token`), 3D Secure ödeme sayfası oluşturur
+(`/vpos/pay-by-link`, `externalId` = sipariş no) ve müşteriyi oraya yönlendirir. Dönüşte (`/mbodeal/payment/callback`)
+sonucu Ödeal'e sorar (`/vpos/check-status`); tarayıcıyı kapatan müşteriler için cron her 10 dakikada tekrar kontrol eder.
+
+- Sipariş **pending payment** durumunda açılır, sipariş e-postası ödeme onaylanınca gider.
+- Ödeme başarılıysa fatura otomatik kesilir, sipariş **processing** olur.
+- Başarısız veya iptalse sipariş iptal edilir, müşterinin sepeti geri yüklenir.
+- Ödenmeyen siparişleri Magento'nun *Pending Payment Order Lifetime* ayarı iptal eder.
+- İade: Credit memo → "Refund" admin'deki iade yolunu çağırır (varsayılan `/vpos/refund`; Ödeal ile teyit edin).
+- Dönüş adresleri mağazanın şifreleme anahtarıyla imzalı sipariş numarası taşır, tahmin edilemez.
+
+**PCI DSS:** kart bilgileri yalnızca Ödeal sayfasında girilir; mağazanız bu bilgileri hiç görmez.
+
+## Para birimi ve TL
+
+Doğrudan tahsil: TRY (add others in the admin if Ödeal enables them for you). Sipariş başka para birimindeyse ana para birimindeki toplam, Mağazalar › Döviz Kurları'nda
+kayıtlı kurla TL'ye çevrilir. TL tutarı ve kur ödeme adımında yöntemin altında gösterilir, ödemeye kaydedilir ve sipariş
+sayfasında görünür; müşteriden gösterilenden farklı tutar çekilmez. Günlük TCMB kurları için **MageBooster Currency Rates**
+(ücretli) kullanılabilir; yoksa Magento'nun herhangi bir kur kaynağı çalışır.
+
+## Checkout uyumluluğu
+
+- Standart Magento ödeme renderer'ı kullanılır; Magento'nun kendi checkout'unda ve standart ödeme yöntemlerini gösteren tek
+  adımlı checkout'larda (ücretsiz ve Pro **MageBooster Checkout** dahil) çalışır. Çok adımlı step navigator'a bağımlı değildir.
+- **Hyvä:** Knockout renderer Luma tabanlı checkout içindir. Hyvä Checkout için küçük bir Magewire/Alpine ödeme bileşeni
+  gerekir; sunucu tarafı (yönlendirme, dönüş, iade) aynıdır.
+
+## Henüz test edilmeyenler
+
+- Henüz Ödeal'e karşı çalıştırılmadı (test bilgileri yok).
+- API adresleri, token yanıt alanları (`accessToken`/`access_token`/`token` kabul edilir) ve iade servisi açık dokümanda yok;
+  bu yüzden admin ayarı olarak bırakıldı.
+- Her yeni token öncekini geçersiz kılar. Modül istek başına tek token kullanır; aynı saniyede çok sayıda ödeme başlarsa
+  biri tekrar denenmek zorunda kalabilir.
+
+## Lisans
+
+MIT. Ödeal kendi sahibinin markasıdır; bu modül onlar tarafından yapılmamış veya onaylanmamıştır.
