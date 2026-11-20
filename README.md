@@ -1,6 +1,6 @@
 # MageBooster_Odeal – Ödeal for Magento 2
 
-Free (MIT) Ödeal payment method for Magento Open Source / Adobe Commerce **2.4.9** and Mage-OS (PHP 8.3 – 8.5).
+Free (MIT) Ödeal payment method for Magento Open Source / Adobe Commerce **2.4.9** and Mage-OS (PHP 8.0+ – 8.5).
 Made by [MageBooster](https://magebooster.com). Türkçe açıklama aşağıda.
 
 ## Install
@@ -70,7 +70,7 @@ MIT. Ödeal is a trademark of its owner; this module is not made or endorsed by 
 
 # MageBooster_Odeal – Magento 2 için Ödeal
 
-Magento Open Source / Adobe Commerce **2.4.9** ve Mage-OS için ücretsiz (MIT) Ödeal ödeme yöntemi (PHP 8.3 – 8.5).
+Magento Open Source / Adobe Commerce **2.4.9** ve Mage-OS için ücretsiz (MIT) Ödeal ödeme yöntemi (PHP 8.0+ – 8.5).
 
 ## Kurulum
 

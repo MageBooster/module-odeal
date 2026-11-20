@@ -17,10 +17,10 @@ class Gateway
     private array $tokens = [];
 
     public function __construct(
-        private readonly Settings $settings,
-        private readonly Http $http,
-        private readonly ReturnUrl $returnUrl,
-        private readonly DebugLog $log
+        private Settings $settings,
+        private Http $http,
+        private ReturnUrl $returnUrl,
+        private DebugLog $log
     ) {
     }
 
