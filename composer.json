@@ -2,7 +2,30 @@
     "name": "magebooster/module-odeal",
     "description": "Ödeal virtual POS (pay by link, 3D Secure) for Magento 2, by MageBooster",
     "type": "magento2-module",
+    "keywords": [
+        "magento2",
+        "magento-2-module",
+        "hyva",
+        "luma",
+        "payment",
+        "odeal",
+        "pay-by-link",
+        "3d-secure",
+        "turkey",
+        "virtual-pos"
+    ],
+    "homepage": "https://magebooster.com",
     "license": "proprietary",
+    "authors": [
+        {
+            "name": "WebWorks 101 OÜ",
+            "homepage": "https://magebooster.com"
+        }
+    ],
+    "support": {
+        "email": "info@magebooster.com",
+        "docs": "https://github.com/MageBooster/module-odeal/blob/main/docs/HOWTO.en.md"
+    },
     "require": {
         "php": ">=8.0",
         "ext-json": "*",
@@ -14,7 +37,11 @@
         "magento/module-quote": "^101.2"
     },
     "autoload": {
-        "files": ["registration.php"],
-        "psr-4": {"MageBooster\\Odeal\\": ""}
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "MageBooster\\Odeal\\": ""
+        }
     }
 }
