@@ -1,6 +1,6 @@
 {
     "name": "magebooster/module-odeal",
-    "description": "Ödeal virtual POS (pay by link, 3D Secure) for Magento 2 – free, by MageBooster",
+    "description": "Ödeal virtual POS (pay by link, 3D Secure) for Magento 2, by MageBooster",
     "type": "magento2-module",
     "license": "proprietary",
     "require": {
