@@ -36,3 +36,7 @@
 "Ödeal rejected the access token. Please check the credentials.","Ödeal erişim anahtarını reddetti. Lütfen bilgileri kontrol edin."
 "Ödeal credentials are not set.","Ödeal bilgileri girilmemiş."
 "Ödeal did not return an access token. Please check the credentials.","Ödeal erişim anahtarı döndürmedi. Lütfen bilgileri kontrol edin."
+"Odeal payments","Odeal ödemeleri"
+"Odeal payments (Hyvä edition)","Odeal ödemeleri (Hyvä sürümü)"
+"Serial number, starts with MB1.","Seri numarası, MB1 ile başlar."
+"Only if you bought the Hyvä edition: serial number, starts with MB1.","Yalnızca Hyvä sürümünü aldıysanız: seri numarası, MB1 ile başlar."

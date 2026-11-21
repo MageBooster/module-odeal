@@ -86,4 +86,17 @@
             <argument name="logger" xsi:type="object">OdealMonolog</argument>
         </arguments>
     </type>
+    <type name="MageBooster\License\Model\Products">
+        <arguments>
+            <argument name="products" xsi:type="array">
+                <item name="odeal" xsi:type="array">
+                    <item name="label" xsi:type="string">Odeal payments</item>
+                    <item name="codes" xsi:type="array">
+                        <item name="odeal" xsi:type="string">odeal</item>
+                        <item name="odeal-hyva" xsi:type="string">odeal-hyva</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>
